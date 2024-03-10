@@ -1,24 +1,38 @@
 import logo from './logo.svg';
 import './App.css';
+import Paymant from './Components/Paymant';
+import { createContext, useState } from 'react';
 
+export const CurrencyContext = createContext()
+export const AmountContext = createContext(0)
 function App() {
+
+  const [currency,setCurrency] = useState("USD");
+  const [amount,setAmount] = useState(0);
+
+  const updateCurrency =()=>{
+    setCurrency("EUR")
+    console.log(currency)
+  }
+
+  const changeAmount = (value)=>{
+     setAmount(value)
+     console.log(amount)
+  }
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <CurrencyContext.Provider value={{currency,updateCurrency}}>
+      <AmountContext.Provider value={{amount,changeAmount}}>
+        <Paymant/>
+      </AmountContext.Provider>
+      
+      <input onInput={e => changeAmount(e.target.value)}/>
+      <button onClick={updateCurrency}>Change currency</button>
+    </CurrencyContext.Provider>
+    
+    </>
   );
 }
 
